@@ -1,0 +1,40 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.6.RELEASE'
+	id 'java'
+}
+
+ext {
+	lombokVersion = "1.18.8"
+	swagger2Version = '2.9.2'
+	oldSwagger2Version = '1.5.21'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.google.knight76'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation('org.springframework.boot:spring-boot-starter-web') {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	implementation "org.projectlombok:lombok:${lombokVersion}"
+	implementation 'org.springframework.boot:spring-boot-starter-undertow'
+
+	// not showing WARN i.s.m.p.AbstractSerializableParameter    : Illegal DefaultValue -1 for parameter type integer
+	//                  java.lang.NumberFormatException: For input string: ""
+	implementation("io.springfox:springfox-swagger2:${swagger2Version}") {
+		exclude group: 'io.swagger',module: 'swagger-annotations'
+		exclude group: 'io.swagger',module: 'swagger-models'
+	}
+	implementation "io.swagger:swagger-annotations:${oldSwagger2Version}"
+	implementation "io.swagger:swagger-models:${oldSwagger2Version}"
+	implementation "io.springfox:springfox-swagger-ui:${swagger2Version}"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
